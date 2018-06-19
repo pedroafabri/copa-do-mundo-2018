@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Resultados dos Jogos ao Vivo</title>
+	<meta charset="UTF-8"/>
+	<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<center id="placar">
+	</center>
+	
+	<script>
+		$(function() {
+		
+		getScores();
+		
+		function getScores(){
+		  $("#placar").html("<h1>Carregando placar...</h1>");
+		  $.get(
+			"http://worldcup.sfg.io/matches",
+			function(data){
+				displayScores(data);
+			}
+		  );
+		}
+		  function displayScores(data){
+			data.forEach(function(item, index){
+				if(item.status != 'in progress') return;
+				var line = "<h1> " + item.home_team.country + " " + item.home_team.goals + " X " + item.away_team.goals + " " + item.away_team.country +"</h1><br/>";
+				$("#placar").html(line);
+			});
+			
+			setTimeout(function(){getScores()}, 60000);
+		  }
+		  
+		});
+		
+	</script>
+	<footer>
+		<center>
+			<h5>O placar é automaticamente atualizado a cada minuto... boa copa! :D<br/>
+				Colabore no <a href="https://github.com/pedroafabri/copa-do-mundo-2018">GitHub</a>!
+			</h5>
+		</center>
+	</footer>
+</body>
+
+</html>
